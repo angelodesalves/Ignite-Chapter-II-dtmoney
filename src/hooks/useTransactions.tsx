@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState, ReactNode } from 'react'
-import { api } from './services/api';
+import { createContext, useEffect, useState, ReactNode, useContext } from 'react'
+import { api } from '../services/api';
 
 interface Transaction {
 	id: number,
@@ -30,7 +30,7 @@ interface TransactionsContextData {
 	createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
 
-export const TransactionsContext = createContext<TransactionsContextData>(
+const TransactionsContext = createContext<TransactionsContextData>(
 //	ao criar um contexto, gera erro pois não retorna o formato esperado
 //	o recomendado é "forçar" a tipagem para enganar o typescript
 //	isso não acaba sendo um problema, pois o valor já é setado no provider logo abaixo
@@ -63,4 +63,10 @@ export function TransactionsProvider({ children } : TransactionsProviderProps) {
 			{children}
 		</TransactionsContext.Provider>
 	)
+}
+
+export function useTransactions() {
+	const context = useContext(TransactionsContext);
+
+	return context;
 }
